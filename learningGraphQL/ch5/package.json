@@ -1,0 +1,22 @@
+{
+  "name": "ch5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon -e js,json,graphql"
+  },
+  "keywords": [],
+  "author": "magcho",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.5.0",
+    "graphql": "^16.0.1",
+    "graphql-import": "^1.0.2",
+    "nodemon": "^2.0.14"
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1"
+  }
+}
