@@ -58,17 +58,22 @@ app.post("/post", async (req, res) => {
   const title = req.body.title || "no title";
   const body = req.body.body || "no body";
 
-  const user = await db.User.findByPk(userId);
+  try {
+    await db.sequelize.transaction(async (_) => {
+      const user = await db.User.findByPk(userId);
 
-  const post = await db.Post.build({
-    title: title,
-    body: body,
-  });
+      const post = await db.Post.create({
+        title: title,
+        body: body,
+        userId: user.id,
+      });
 
-  user.addPost(post);
-  const newPost = await post.save();
-
-  res.json({ newPost });
+      res.json({ post });
+    });
+  } catch (err) {
+    res.json({ err: err });
+    throw err;
+  }
 });
 
 app.get("/post/:postId", async (req, res) => {
