@@ -1,5 +1,6 @@
 import { GraphQLScalarType } from "graphql";
 import { authorizeWithGithub } from "./auth.js";
+import fetch from "node-fetch";
 const users = [
   { githubLogin: "@magcho", name: "magcho" },
   { githubLogin: "@magchoa", name: "magchoa" },
@@ -70,13 +71,34 @@ export const resolvers = {
     me: (parent, args, { currentUser }) => currentUser,
   },
   Mutation: {
-    postPhoto(parent, args) {
+    async addFakeUsers(root, { count }, { db }) {
+      const randomUser = `http://randomuser.me/api/?results=${count}`;
+
+      const { results } = await fetch(randomUser).then((res) => res.json());
+
+      const users = results.map((r) => ({
+        githubLogin: r.login.username,
+        name: `${r.name.first} ${r.name.last}`,
+        avator: r.picture.thumbnail,
+        githubToken: r.login.sha1,
+      }));
+
+      await db.collection("users").insertMany(users);
+
+      return users;
+    },
+    async postPhoto(parent, args, { db, currentUser }) {
+      if (!currentUser) throw new Error("unauthed");
+
       const newPhoto = {
-        id: _id++,
         ...args.input,
+        userId: currentUser.githubLogin,
         created: new Date(),
       };
-      photos.push(newPhoto);
+
+      const { insertedId } = await db.collection("photos").insert(newPhoto);
+      newPhoto.id = insertedId;
+
       return newPhoto;
     },
     async githubAuth(parent, { code }, { db }) {
@@ -110,9 +132,10 @@ export const resolvers = {
     },
   },
   Photo: {
+    id: (parent) => parent.id || parent._id,
     url: (parent) => `http://example.com/${parent.id}.jpg`,
-    postedBy: (parent) => {
-      return users.filter((user) => user.githubLogin === parent.githubUser);
+    postedBy: (parent, args, { db }) => {
+      return db.collection("users").findOne({ githubLogin: parent.userId });
     },
     taggedUsers: (parent) => {
       return tags

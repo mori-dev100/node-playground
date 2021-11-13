@@ -1,4 +1,4 @@
-enum PhotoCategory{
+enum PhotoCategory {
   SELFIE
   PORTRAIT
   ACTION
@@ -8,7 +8,7 @@ enum PhotoCategory{
 
 scalar DateTime
 
-type Photo{
+type Photo {
   id: ID!
   url: String!
   name: String!
@@ -19,7 +19,7 @@ type Photo{
   taggedUsers: [User!]!
 }
 
-type User{
+type User {
   githubLogin: ID!
   name: String
   avatar: String
@@ -29,7 +29,7 @@ type User{
 
 input PostPhotoInput {
   name: String!
-  category: PhotoCategory=PORTRAIT
+  category: PhotoCategory = PORTRAIT
   description: String
 }
 
@@ -41,7 +41,7 @@ type Query {
   me: User
 }
 
-type AuthPayload{
+type AuthPayload {
   token: String!
   user: User!
 }
@@ -49,4 +49,5 @@ type AuthPayload{
 type Mutation {
   postPhoto(input: PostPhotoInput): Photo!
   githubAuth(code: String!): AuthPayload!
+  addFakeUsers(count: Int = 1): [User!]!
 }
