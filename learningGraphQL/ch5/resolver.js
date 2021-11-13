@@ -54,11 +54,18 @@ const tags = [
 
 export const resolvers = {
   Query: {
-    totalPhotos: () => photos.length,
-    allPhotos: (parent, args) => {
-      return photos;
+    totalPhotos: (parent, args, { db }) => {
+      return db.collection("photos").estimatedDocumentCount();
     },
-    allUsers: () => users,
+    allPhotos: (parent, args, { db }) => {
+      return db.collection("photos").find().toArray();
+    },
+    totalUsers: (parent, args, { db }) => {
+      return db.collection("users").estimatedDocumentCount();
+    },
+    allUsers: (parent, args, { db }) => {
+      return db.collection("users").find().toArray();
+    },
   },
   Mutation: {
     postPhoto(parent, args) {
