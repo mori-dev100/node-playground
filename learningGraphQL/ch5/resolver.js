@@ -71,6 +71,18 @@ export const resolvers = {
     me: (parent, args, { currentUser }) => currentUser,
   },
   Mutation: {
+    async fakeUserAuth(root, { githubLogin }, { db }) {
+      const user = await db
+        .collection("users")
+        .findOne({ githubLogin: githubLogin });
+
+      if (!user) throw new Error("unkonwn user");
+
+      return {
+        token: user.githubToken,
+        user: user,
+      };
+    },
     async addFakeUsers(root, { count }, { db }) {
       const randomUser = `http://randomuser.me/api/?results=${count}`;
 
