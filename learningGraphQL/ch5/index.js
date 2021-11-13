@@ -15,8 +15,22 @@ const photos = [
     id: "1",
     name: "magcho",
     description: "aaaa",
-    category: "PORTRATE",
+    category: "PORTRAT",
     githubUser: "@magcho",
+  },
+  {
+    id: "2",
+    name: "magcho",
+    description: "aaaa",
+    category: "PORTRAT",
+    githubUser: "@magcho",
+  },
+  {
+    id: "3",
+    name: "magchob",
+    description: "aaaa",
+    category: "PORTRAT",
+    githubUser: "@magchob",
   },
 ];
 
