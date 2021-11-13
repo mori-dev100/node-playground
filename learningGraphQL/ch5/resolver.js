@@ -1,4 +1,5 @@
 import { GraphQLScalarType } from "graphql";
+import { authorizeWithGithub } from "./auth.js";
 const users = [
   { githubLogin: "@magcho", name: "magcho" },
   { githubLogin: "@magchoa", name: "magchoa" },
@@ -76,6 +77,35 @@ export const resolvers = {
       };
       photos.push(newPhoto);
       return newPhoto;
+    },
+    async githubAuth(parent, { code }, { db }) {
+      let { message, access_token, avatar_url, login, name } =
+        await authorizeWithGithub({
+          client_id: process.env.C_ID,
+          client_secret: process.env.C_SECRET,
+          code,
+        });
+
+      if (message) {
+        throw new Error(message);
+      }
+
+      const latestUserInfo = {
+        name,
+        githubLogin: login,
+        githubToken: access_token,
+        avator: avatar_url,
+      };
+
+      await db.collection("users").replaceOne(
+        {
+          githubLogin: login,
+        },
+        latestUserInfo,
+        { upsert: true }
+      );
+
+      return { user: latestUserInfo, token: access_token };
     },
   },
   Photo: {
