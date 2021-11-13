@@ -13,9 +13,19 @@ const app = express();
 const MONGO_DB = "mongodb://root:example@localhost:27017/";
 const client = await MongoClient.connect(MONGO_DB, { useNewUrlParser: true });
 const db = client.db();
-const context = { db };
 
-const server = new ApolloServer({ typeDefs, resolvers, context });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async ({ req }) => {
+    const githubToken = req.headers?.authorization;
+    const currentUser = await db
+      .collection("users")
+      .findOne({ githubToken: githubToken });
+
+    return { db, currentUser };
+  },
+});
 await server.start();
 server.applyMiddleware({ app });
 

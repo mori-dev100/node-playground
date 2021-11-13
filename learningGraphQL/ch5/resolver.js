@@ -67,6 +67,7 @@ export const resolvers = {
     allUsers: (parent, args, { db }) => {
       return db.collection("users").find().toArray();
     },
+    me: (parent, args, { currentUser }) => currentUser,
   },
   Mutation: {
     postPhoto(parent, args) {
