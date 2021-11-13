@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import { importSchema } from "graphql-import";
+import { GraphQLScalarType } from "graphql";
 
 const typeDefs = importSchema("./schema.graphql");
 
@@ -9,7 +10,7 @@ const users = [
   { githubLogin: "@magchob", name: "magchob" },
 ];
 
-let _id = 0;
+let _id = 4;
 const photos = [
   {
     id: "1",
@@ -17,6 +18,7 @@ const photos = [
     description: "aaaa",
     category: "PORTRAT",
     githubUser: "@magcho",
+    created: "2021/11/13",
   },
   {
     id: "2",
@@ -24,6 +26,7 @@ const photos = [
     description: "aaaa",
     category: "PORTRAT",
     githubUser: "@magcho",
+    created: "2021/11/13",
   },
   {
     id: "3",
@@ -31,6 +34,7 @@ const photos = [
     description: "aaaa",
     category: "PORTRAT",
     githubUser: "@magchob",
+    created: "2021/11/13",
   },
 ];
 
@@ -56,7 +60,9 @@ const tags = [
 const resolvers = {
   Query: {
     totalPhotos: () => photos.length,
-    allPhotos: () => photos,
+    allPhotos: (parent, args) => {
+      return photos;
+    },
     allUsers: () => users,
   },
   Mutation: {
@@ -64,6 +70,7 @@ const resolvers = {
       const newPhoto = {
         id: _id++,
         ...args.input,
+        created: new Date(),
       };
       photos.push(newPhoto);
       return newPhoto;
@@ -92,6 +99,13 @@ const resolvers = {
         .map((photoId) => photos.find((photo) => photo.id === photoId));
     },
   },
+  DateTime: new GraphQLScalarType({
+    name: "DateTime",
+    description: "A valid date time value",
+    parseValue: (value) => new Date(value),
+    serialize: (value) => new Date(value).toISOString(),
+    parseLiteral: (ast) => ast.value,
+  }),
 };
 
 const server = new ApolloServer({
