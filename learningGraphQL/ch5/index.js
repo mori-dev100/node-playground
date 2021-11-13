@@ -34,6 +34,25 @@ const photos = [
   },
 ];
 
+const tags = [
+  {
+    photoId: "1",
+    userId: "@magchoa",
+  },
+  {
+    photoId: "2",
+    userId: "@magcho",
+  },
+  {
+    photoId: "2",
+    userId: "@magchoa",
+  },
+  {
+    photoId: "2",
+    userId: "@magchob",
+  },
+];
+
 const resolvers = {
   Query: {
     totalPhotos: () => photos.length,
@@ -55,10 +74,22 @@ const resolvers = {
     postedBy: (parent) => {
       return users.filter((user) => user.githubLogin === parent.githubUser);
     },
+    taggedUsers: (parent) => {
+      return tags
+        .filter((tag) => tag.photoId === parent.id)
+        .map((tag) => tag.userId)
+        .map((userid) => users.find((user) => user.githubLogin === userid));
+    },
   },
   User: {
     postedPhotos: (parent) => {
       return photos.filter((photo) => photo.githubUser === parent.githubLogin);
+    },
+    inPhotos: (parent) => {
+      return tags
+        .filter((tag) => tag.userId === parent.githubLogin)
+        .map((tag) => tag.photoId)
+        .map((photoId) => photos.find((photo) => photo.id === photoId));
     },
   },
 };

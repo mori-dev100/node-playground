@@ -16,6 +16,7 @@ type Photo{
   category: PhotoCategory!
   postedBy: User!
   created: DataTime
+  taggedUsers: [User!]!
 }
 
 type User{
@@ -23,6 +24,7 @@ type User{
   name: String
   avatar: String
   postedPhotos: [Photo!]!
+  inPhotos: [Photo!]!
 }
 
 input PostPhotoInput {
