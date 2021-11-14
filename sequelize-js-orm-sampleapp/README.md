@@ -10,7 +10,7 @@ npx sequelize-cli init
 npx sequelize-cli model:generate --name User --attributes name:string,email:string
 npx sequelize-cli model:generate --name Chatroom --attributes title:string
 npx sequelize-cli model:generate --name ChatMember --attributes userId:integer,chatroomId:integer
-npx sequelize-cli model:generate --name Message --attributes postedUser:integer,content:text
+npx sequelize-cli model:generate --name Message --attributes postedUserId:integer,content:text
 ```
 
 stringはデフォルトで最大長255文字まで、textは任意長テキストっぽい
@@ -18,6 +18,11 @@ https://sequelize.org/master/class/lib/data-types.js~STRING.html
 https://sequelize.org/master/class/lib/data-types.js~TEXT.html
 
 
+## generate seeder
+
+``` sh
+npx sequelize-cli seed:geneate --name create-users
+```
 
 many to manyではassociation用のテーブルを作成してモデル間のリレーションはthroughで指定するといいらしい
 
