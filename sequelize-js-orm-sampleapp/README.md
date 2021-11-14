@@ -21,7 +21,9 @@ https://sequelize.org/master/class/lib/data-types.js~TEXT.html
 ## generate seeder
 
 ``` sh
-npx sequelize-cli seed:geneate --name create-users
+npx sequelize-cli seed:generate --name create-users
+npx sequelize-cli seed:generate --name create-chatroom
+npx sequelize-cli seed:generate --name create-chatmember
 ```
 
 many to manyではassociation用のテーブルを作成してモデル間のリレーションはthroughで指定するといいらしい

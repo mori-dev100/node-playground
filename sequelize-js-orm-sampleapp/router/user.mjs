@@ -18,4 +18,8 @@ router.get("/user/:userId", async (req, res) => {
 
   res.json({ user });
 });
+router.get("/user-one", async (_, res) => {
+  const firstUser = await User.findOne();
+  res.json({ user: firstUser });
+});
 export default router;
