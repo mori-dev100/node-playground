@@ -1,11 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import models from "./models/index.js";
-
-/**
- * @type import("sequelize").Model
- */
-const User = models.User;
+import userRouter from "./router/user.mjs";
 
 const app = express();
 
@@ -16,10 +12,7 @@ app.get("/", (req, res) => {
   res.json({ hello: "world" });
 });
 
-app.get("/users", async (_, res) => {
-  const users = await User.findAll();
-  res.json({ users });
-});
+app.use("/", userRouter);
 
 app.listen(3000, () => {
   console.log("[SERVER START]");
