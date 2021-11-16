@@ -13,7 +13,7 @@ class UserService {
    */
   async fetchOneUser(id) {
     const data = await this.userRepository.get(id);
-    const user = new User(data.name, data.email);
+    const user = new User(data[0].name, data[0].email);
     return user;
   }
 
