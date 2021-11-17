@@ -1,4 +1,7 @@
-class BaseRepository {
+import db from "../db";
+export default class BaseRepository {
+  constructor() {}
+
   /**
    * @param {DBoptions}
    * @returns {import('knex').Knex}

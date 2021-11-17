@@ -1,4 +1,3 @@
-import db from "../db/index";
 import BaseRepository from "./baseRepository";
 
 /**
@@ -7,8 +6,10 @@ import BaseRepository from "./baseRepository";
  * @property include? {String[]}
  */
 
-class teamRepository extends BaseRepository {
-  constructor() {}
+class TeamRepository extends BaseRepository {
+  constructor() {
+    super();
+  }
 
   /**
    *
@@ -43,8 +44,5 @@ class teamRepository extends BaseRepository {
   }
 }
 
-export default {
-  all,
-  get,
-  transaction,
-};
+const teamRepository = new TeamRepository();
+export default teamRepository;
