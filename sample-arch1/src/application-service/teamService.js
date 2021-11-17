@@ -1,7 +1,7 @@
 import { Team } from "../model/team";
 import teamRepository from "../repository/teamRepository";
 
-class UserService {
+class TeamService {
   constructor(repository) {
     this.teamRepository = repository;
   }
@@ -12,6 +12,10 @@ class UserService {
    */
   async fetchOneUser(id) {
     const data = await this.teamRepository.get(id);
+
+    if (data.length === 0) {
+      throw new Error("empty data from DB");
+    }
 
     const team = new Team(data[0].created_user_id);
     return team;
@@ -27,14 +31,18 @@ class UserService {
     return teams;
   }
 
-  async tx() {
-    await this.teamRepository.transaction(async (trx) => {
-      // const data = await trx("users").select("*");
+  async transactionSample() {
+    return await this.teamRepository.transaction(async (trx) => {
       const data = await this.teamRepository.all({ transaction: trx });
-      console.log(data);
+      await this.teamRepository.get(1, { transaction: trx });
+
+      const teams = data.map((item) => new Team(item.created_user_id));
+      const oneTeam = new Team(data[0].created_user_id);
+
+      return { teams, oneTeam };
     });
   }
 }
-const userSerivce = new UserService(teamRepository);
+const teamService = new TeamService(teamRepository);
 
-export default userSerivce;
+export default teamService;

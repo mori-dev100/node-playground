@@ -16,15 +16,9 @@ router.get("/team/:teamId", async (req, res) => {
   res.json({ team: team.toJson() });
 });
 
-router.get('/test',async (req,res)=>{
-  await teamService.tx()
-  res.json({})
-})
-
-// router.get("/team/transaction", async (req, res) => {
-//   await teamService.transactionSample();
-
-//   res.json({ ok: "ok" });
-// });
+router.get("/transaction-sample", async (req, res) => {
+  const data = await teamService.transactionSample();
+  res.json({ ...data });
+});
 
 export default router;

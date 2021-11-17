@@ -21,9 +21,7 @@ async function all(options) {
 async function get(id, options) {
   const knex = transactionContextHelper(options);
 
-  const data = await knex("teams")
-    .select(["created_user_id"])
-    .where({ id: id });
+  const data = await knex("teams").select("*").where({ id: id });
 
   return data;
 }
@@ -43,10 +41,6 @@ function transactionContextHelper(options) {
   return knex;
 }
 
-function createTransaction() {
-  return () => db.transaction();
-}
-
 async function transaction(callback) {
   const trx = await db.transaction();
 
@@ -63,6 +57,5 @@ async function transaction(callback) {
 export default {
   all,
   get,
-  createTransaction,
   transaction,
 };
