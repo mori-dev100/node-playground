@@ -1,5 +1,5 @@
 import express from "express";
-import teamService from '../application-service/teamService'
+import teamService from "../application-service/teamService";
 
 const router = express.Router();
 
@@ -15,5 +15,16 @@ router.get("/team/:teamId", async (req, res) => {
 
   res.json({ team: team.toJson() });
 });
+
+router.get('/test',async (req,res)=>{
+  await teamService.tx()
+  res.json({})
+})
+
+// router.get("/team/transaction", async (req, res) => {
+//   await teamService.transactionSample();
+
+//   res.json({ ok: "ok" });
+// });
 
 export default router;
