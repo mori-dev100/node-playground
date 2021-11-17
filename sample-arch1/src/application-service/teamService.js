@@ -1,3 +1,4 @@
+import { User } from "../model/user";
 import { Team } from "../model/team";
 import teamRepository from "../repository/teamRepository";
 
@@ -11,14 +12,19 @@ class TeamService {
    * @returns Promise<User>
    */
   async fetchOneUser(id) {
-    const data = await this.teamRepository.get(id);
+    // １レコードのみのselect
+    // const data = await this.teamRepository.get(id);
+
+    // リレーションを考慮してJOINしてselect
+    const data = await this.teamRepository.get(id, { include: ["user"] });
 
     if (data.length === 0) {
       throw new Error("empty data from DB");
     }
 
     const team = new Team(data[0].created_user_id);
-    return team;
+    const user = new User(data[0].name, data[0].email);
+    return { team, user };
   }
 
   /**

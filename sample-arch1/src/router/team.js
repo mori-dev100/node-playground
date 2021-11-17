@@ -11,9 +11,9 @@ router.get("/teams", async (req, res) => {
 
 router.get("/team/:teamId", async (req, res) => {
   const teamId = req.params.teamId;
-  const team = await teamService.fetchOneUser(teamId);
+  const { team, user } = await teamService.fetchOneUser(teamId);
 
-  res.json({ team: team.toJson() });
+  res.json({ team: team.toJson(), user: user.toJson() });
 });
 
 router.get("/transaction-sample", async (req, res) => {
