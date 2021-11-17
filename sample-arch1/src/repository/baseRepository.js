@@ -34,4 +34,8 @@ export default class BaseRepository {
       return err;
     }
   }
+
+  isEqualsInclude(a, b) {
+    return JSON.stringify(a) == JSON.stringify(b);
+  }
 }

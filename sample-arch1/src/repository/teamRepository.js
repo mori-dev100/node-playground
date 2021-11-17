@@ -30,7 +30,7 @@ class TeamRepository extends BaseRepository {
   async get(id, options) {
     const knex = this.transactionContextHelper(options);
 
-    if (options && options.include.includes("user")) {
+    if (options && this.isEqualsInclude(options.include, ["user"])) {
       const data = await knex
         .select("*")
         .from("teams")
