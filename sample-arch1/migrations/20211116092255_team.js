@@ -4,8 +4,8 @@
 exports.up = function (knex) {
   return knex.schema.createTable("teams", (table) => {
     table.increments("id");
-    table.integer("userId").unsigned().notNullable();
-    table.foreign("userId").references("users.id");
+    table.integer("created_user_id").unsigned();
+    table.foreign("created_user_id").references("users.id");
   });
 };
 
