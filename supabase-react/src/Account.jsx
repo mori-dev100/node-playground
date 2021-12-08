@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
+import Avatar from "./Avatar";
 
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [website, setWebsite] = useState(null);
-  const [avatar_url, setAvatorUrl] = useState(null);
+  const [avatar_url, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     getProfile();
@@ -29,7 +30,7 @@ export default function Account({ session }) {
       if (data) {
         setUsername(data.username);
         setWebsite(data.website);
-        setAvatorUrl(data.avatar_url);
+        setAvatarUrl(data.avatar_url);
       }
     } catch (e) {
       console.error(e);
@@ -93,6 +94,17 @@ export default function Account({ session }) {
             type="website"
             value={website || ""}
             onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Avatar
+            url={avatar_url}
+            size={150}
+            onUpload={(url) => {
+              setAvatarUrl(url);
+              updateProfile({ username, website, avatar_url: url });
+            }}
           />
         </div>
 
