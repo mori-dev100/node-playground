@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
+import { supabase } from "./supabaseClient";
+
+import Realtime from "./Realtime";
 import Auth from "./Auth";
 import Account from "./Account";
 import "./App.css";
-import { useEffect, useState } from "react";
-import { supabase } from "./supabaseClient";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -22,6 +24,7 @@ function App() {
       ) : (
         <Account session={session} key={session.user.id} />
       )}
+      <Realtime />
     </div>
   );
 }
