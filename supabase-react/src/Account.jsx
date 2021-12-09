@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import Avatar from "./Avatar";
+import Chat from "./Chat";
 
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
@@ -127,6 +128,7 @@ export default function Account({ session }) {
           </button>
         </div>
       </div>
+      <Chat />
     </>
   );
 }
