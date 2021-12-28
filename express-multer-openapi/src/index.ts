@@ -11,12 +11,30 @@ app.use(
   OpenApiValidator.middleware({
     apiSpec: "./openapi.yaml",
     validateRequests: true, // (default)
-    validateResponses: true, // false by default
+    validateResponses: false,
   })
 );
 
 app.get("/hello", (req, res) => {
   res.json({ message: "world" });
+});
+
+app.post("/user", (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+
+  res.json({
+    date: new Date(Date.now()).toLocaleString(),
+    name,
+    email,
+  });
+});
+
+app.post("/user/photo", (req, res) => {
+  res.json({
+    status: true,
+    fileName: "aaa",
+  });
 });
 
 app.use((err, req, res, next) => {

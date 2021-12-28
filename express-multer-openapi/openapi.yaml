@@ -7,8 +7,8 @@ servers:
 paths:
   /hello:
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: ''
+      operationId: get-hello
       responses:
         '200':
           description: OK
@@ -19,10 +19,77 @@ paths:
                 properties:
                   message:
                     type: string
-                  '':
-                    type: string
                 required:
                   - message
-      operationId: get-hello
+  /user:
+    post:
+      summary: ''
+      operationId: post-user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      date:
+                        type: string
+                    required:
+                      - name
+                      - email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required:
+                - name
+                - email
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+  /user/photo:
+    post:
+      summary: ''
+      operationId: post-user-photo
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profile_image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  fileName:
+                    type: string
+                required:
+                  - status
+                  - fileName
 components:
   schemas: {}
+  requestBodies: {}
