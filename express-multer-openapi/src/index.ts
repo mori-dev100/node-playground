@@ -1,8 +1,10 @@
 import express from "express";
 import morgan from "morgan";
+import multer from "multer";
 import * as OpenApiValidator from "express-openapi-validator";
 
 const app = express();
+const upload = multer({ dest: "uploads/" });
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -30,10 +32,17 @@ app.post("/user", (req, res) => {
   });
 });
 
-app.post("/user/photo", (req, res) => {
+app.post("/user/photo", upload.single("profile_image"), (req, res) => {
+  if (!req.files) {
+    res.status(401).end();
+    return;
+  }
+
+  const file = req.files[0];
+
   res.json({
     status: true,
-    fileName: "aaa",
+    fileName: file.originalname,
   });
 });
 
