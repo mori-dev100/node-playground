@@ -3,7 +3,7 @@ on: push
 
 jobs:
   # コンテナジョブのラベル
-  container-job:
+  postgres:
     # コンテナは Linux ベースのオペレーティングシステムで実行しなければならない
     # runs-on: ubuntu-latest
     runs-on: self-hosted
@@ -48,3 +48,40 @@ jobs:
           POSTGRES_HOST: postgres
           # デフォルトのPostgreSQLポート
           POSTGRES_PORT: 5432
+
+
+  mysql:
+    runs-on: self-hosted
+    container: node:16
+
+    services:
+      test-database:
+        image: mysql/mysql-server:8.0
+        env:
+          # MYSQL_ROOT_HOST: '%'
+          # MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: xxxxxxxxxx
+          MYSQL_USER: user
+          MYSQL_PASSWORD: xxxxxxxxx
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test
+        run: |
+          npm run test
+        env:
+          DB_HOST: test-database
+          DB_USER: user
+          DB_PASSWORD: xxxxxxxxxxx
+          DB_DATABASE: xxxxxxxxx
+          DB_PORT: 3306
