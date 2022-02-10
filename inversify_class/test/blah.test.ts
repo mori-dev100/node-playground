@@ -1,7 +1,17 @@
-import { sum } from '../src';
+import 'reflect-metadata';
+import { container } from '../src/inversify.config';
+import { UserService } from '../src/UserService';
 
-describe('blah', () => {
-  it('works', () => {
-    expect(sum(1, 1)).toEqual(2);
+const userService = container.get(UserService);
+
+describe('test', () => {
+  test('seed test', () => {
+    expect(userService.list()).toEqual(['user1', 'user2']);
+  });
+
+  test('insert', () => {
+    expect(userService.list()).not.toContain('user3');
+    userService.insert('user3');
+    expect(userService.list()).toContain('user3');
   });
 });
