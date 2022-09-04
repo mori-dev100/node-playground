@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap \"test/**/*.(test|spec).ts\""
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,9 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.14",
+    "@types/tap": "^15.0.7",
+    "fastify-cli": "^5.4.1",
+    "tap": "^16.3.0",
     "tsx": "^3.9.0",
     "typescript": "^4.8.2"
   }
