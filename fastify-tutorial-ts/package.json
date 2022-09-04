@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "NO LICENSE",
   "dependencies": {
-    "fastify": "^4.5.3"
+    "@fastify/autoload": "^5.3.1",
+    "@fastify/sensible": "^5.1.1",
+    "fastify": "^4.5.3",
+    "fastify-plugin": "^4.2.1"
   },
   "devDependencies": {
     "@types/node": "^18.7.14",

@@ -1,10 +1,9 @@
 import fastify from "fastify";
+import app from "./app";
 
 const server = fastify({ logger: true });
 
-server.get("/", async (_request, _reply) => {
-  return { hello: "wrold" };
-});
+server.register(app);
 
 const start = async () => {
   try {
