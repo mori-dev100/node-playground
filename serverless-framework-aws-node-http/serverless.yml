@@ -1,7 +1,7 @@
 org: magcho
 app: serverless-framework-aws-node-http
 service: serverless-framework-aws-node-http
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -11,28 +11,28 @@ provider:
   iam:
     role:
       statements:
-        - Effect: 'Allow'
+        - Effect: "Allow"
           Action:
-            - 'dynamodb:PutItem'
-            - 'dynamodb:Get*'
-            - 'dynamodb:Scan*'
-            - 'dynamodb:UpdateItem*'
-            - 'dynamodb:DeleteItem*'
+            - "dynamodb:PutItem"
+            - "dynamodb:Get*"
+            - "dynamodb:Scan*"
+            - "dynamodb:UpdateItem*"
+            - "dynamodb:DeleteItem*"
           Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-customerTable-${sls:stage}
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
   createCustomer:
     handler: handler.createCustomer
     events:
       - httpApi:
           path: /
           method: post
+  getCustomers:
+    handler: handler.getCustomers
+    events:
+      - httpApi:
+          path: /
+          method: get
 
 resources:
   Resources:
@@ -47,3 +47,17 @@ resources:
           - AttributeName: primary_key
             KeyType: HASH
         TableName: ${self:service}-customerTable-${sls:stage}
+
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true

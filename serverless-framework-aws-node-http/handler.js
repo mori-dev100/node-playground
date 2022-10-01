@@ -1,23 +1,18 @@
 "use strict";
 const AWS = require("aws-sdk");
 
-module.exports.hello = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: "Go Serverless v3.0! Your function executed successfully!",
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
-};
+let dynamoDb;
+if (process.env.IS_OFFLINE) {
+  dynamoDb = new AWS.DynamoDB.DocumentClient({
+    region: "localhost",
+    endpoint: "http://localhost:8000",
+  });
+} else {
+  dynamoDb = new AWS.DynamoDB.DocumentClient();
+}
 
 module.exports.createCustomer = async (event) => {
   const body = JSON.parse(Buffer.from(event.body, "base64").toString());
-  const dynamoDb = new AWS.DynamoDB.DocumentClient();
   const putParams = {
     TableName: process.env.DYNAMODB_CUSTOMER_TABLE,
     Item: {
@@ -29,5 +24,32 @@ module.exports.createCustomer = async (event) => {
 
   return {
     statusCode: 201,
+  };
+};
+
+module.exports.getCustomers = async (event) => {
+  const scanParams = {
+    TableName: process.env.DYNAMODB_CUSTOMER_TABLE,
+  };
+
+  const result = await dynamoDb.scan(scanParams).promise();
+
+  if (result.Count === 0) {
+    return {
+      statusCode: 404,
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      total: result.Count,
+      items: await result.Items.map((customer) => {
+        return {
+          name: customer.primary_key,
+          email: customer.email,
+        };
+      }),
+    }),
   };
 };
