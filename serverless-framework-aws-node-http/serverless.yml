@@ -1,0 +1,16 @@
+org: magcho
+app: serverless-framework-aws-node-http
+service: serverless-framework-aws-node-http
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
