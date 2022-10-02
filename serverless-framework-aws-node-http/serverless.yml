@@ -21,6 +21,13 @@ provider:
           Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-customerTable-${sls:stage}
 
 functions:
+  helloWorld:
+    handler: handler.helloWorld
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+
   createCustomer:
     handler: handler.createCustomer
     events:

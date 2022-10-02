@@ -11,6 +11,12 @@ if (process.env.IS_OFFLINE) {
   dynamoDb = new AWS.DynamoDB.DocumentClient();
 }
 
+module.exports.helloWorld = async (event) => {
+  return {
+    event,
+  };
+};
+
 module.exports.createCustomer = async (event) => {
   const body = JSON.parse(Buffer.from(event.body, "base64").toString());
   const putParams = {
