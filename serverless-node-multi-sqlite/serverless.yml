@@ -21,3 +21,9 @@ functions:
       - httpApi:
           path: /api1
           method: get
+  api2:
+    handler: functions/api2/handler.get
+    events:
+      - httpApi:
+          path: /api2
+          method: get

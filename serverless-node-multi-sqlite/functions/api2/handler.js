@@ -3,7 +3,7 @@
 const knex = require("knex")({
   client: "better-sqlite3",
   connection: {
-    filename: "./functions/api1/database1.sqlite",
+    filename: "./functions/api2/database2.sqlite",
   },
 });
 
