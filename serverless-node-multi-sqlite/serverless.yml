@@ -1,5 +1,5 @@
 service: serverless-http-api
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -7,6 +7,16 @@ provider:
 
 plugins:
   - serverless-offline
+
+package:
+  individually: true
+  patterns:
+    # - '!node_modules/**'
+    - "!.DS_Store"
+    - "!serverless.*.yml"
+    - "!*.md"
+    - "!.git/**"
+    - "!**/*.sqlite"
 
 functions:
   hello:
@@ -17,12 +27,19 @@ functions:
           method: get
   api1:
     handler: functions/api1/handler.get
+    package:
+      patterns:
+        - "./functions/api1/database1.sqlite"
     events:
       - httpApi:
           path: /api1
           method: get
+
   api2:
     handler: functions/api2/handler.get
+    package:
+      patterns:
+        - "./functions/api2/database2.sqlite"
     events:
       - httpApi:
           path: /api2
