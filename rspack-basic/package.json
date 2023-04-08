@@ -1,0 +1,23 @@
+{
+  "name": "rspack-react-starter",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "rspack serve",
+    "build": "rspack build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.8"
+  },
+  "devDependencies": {
+    "@rspack/cli": "latest",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "@types/styled-components": "^5.1.26",
+    "webpack-bundle-analyzer": "^4.8.0",
+    "webpack-stats-plugin": "^1.1.1",
+    "webpack-visualizer-plugin": "^0.1.11"
+  }
+}
