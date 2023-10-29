@@ -1,9 +1,64 @@
 # esbuildでexportされたclassをビルドするテスト
 
+前提とするmjs, cjsのファイルはこの２つ
+``` js
+// Hoge.mjs
+export default class Hoge {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayName() {
+    console.log("Hoge", this.name);
+  }
+}
+
+export class Fuga {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayName() {
+    console.log("Fuga", this.name);
+  }
+}
+```
+
+``` js
+exports.default = class Foo {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayName() {
+    console.log("Foo", this.name);
+  }
+};
+
+exports.Bar = class Bar {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayName() {
+    console.log("Bar", this.name);
+  }
+};
+```
+
+
+# 実行パターン
 
 ## mjs + named export
 
 ``` javascript
+// index1.mjs
+import { Fuga } from "./Hoge.mjs";
+
+const fuga = new Fuga(":sushi:");
+fuga.sayName();
+
+
 // npx esbuild src/index1.mjs --bundle
 (() => {
   // src/Hoge.mjs
@@ -31,6 +86,14 @@ Fuga :sushi:
 ## mjs + default export
 
 ``` javascript
+// index2.mjs
+import Hoge from "./Hoge.mjs";
+
+const hoge = new Hoge(":sushi:");
+hoge.sayName();
+
+
+
 // npx esbuild src/index2.mjs --bundle
 (() => {
   // src/Hoge.mjs
@@ -57,6 +120,13 @@ Hoge :sushi:
 ## cjs + named export
 
 ``` javascript
+// index3.mjs
+import { Bar } from "./Foo.cjs";
+
+const bar = new Bar(":sushi:");
+bar.sayName();
+
+
 // npx esbuild src/index3.mjs --bundle
 (() => {
   var __create = Object.create;
@@ -122,6 +192,13 @@ Bar :sushi:
 ## cjs + default export
 
 ``` javascript
+// index4.mjs
+import Foo from "./Foo.cjs";
+
+const foo = new Foo(":sushi:");
+foo.sayName();
+
+
 // npx esbuild src/index4.mjs --bundle
 (() => {
   var __create = Object.create;
@@ -202,6 +279,13 @@ TypeError: import_Foo.default is not a constructor
 ## cjs + default export + namespace import
 
 ``` js
+// index5.mjs
+import * as Foo from "./Foo.cjs";
+
+const foo = new Foo(":sushi:");
+foo.sayName();
+
+
 // npx esbuild src/index5.mjs --bundle
 (() => {
   var __create = Object.create;
@@ -297,6 +381,14 @@ TypeError: Foo is not a constructor
 
 
 ``` js
+// index6.mjs
+import { default as FooNamespace } from "./Foo.cjs";
+
+const { default: Foo } = FooNamespace;
+const foo = new Foo(":sushi:");
+foo.sayName();
+
+
 // npx esbuild ./src/index6.mjs --bundle
 (() => {
   var __create = Object.create;
