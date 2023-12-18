@@ -1,0 +1,20 @@
+{
+  "name": "eslint-nested-featuretoggle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --rulesdir eslint-rules index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  },
+  "dependencies": {
+    "eslint-visitor-keys": "^3.4.3"
+  }
+}
