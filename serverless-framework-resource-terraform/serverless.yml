@@ -15,3 +15,9 @@ functions:
           path: /
           method: get
         
+resources:
+  Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: magcho-serverless-framework-0811
