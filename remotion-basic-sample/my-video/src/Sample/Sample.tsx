@@ -10,6 +10,8 @@ export const Sample: React.FC<z.infer<typeof sampleCompSchema>> = ({
   title,
 }) => {
   const frame = useCurrentFrame();
+  const opacity = Math.min(1, frame / 60);
+
   return (
     <AbsoluteFill
       style={{
@@ -19,7 +21,13 @@ export const Sample: React.FC<z.infer<typeof sampleCompSchema>> = ({
         backgroundColor: "white",
       }}
     >
-      The current frame is: {frame}
+      <div
+        style={{
+          opacity: opacity,
+        }}
+      >
+        Hello world
+      </div>
     </AbsoluteFill>
   );
 };
