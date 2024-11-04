@@ -1,5 +1,11 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame } from "remotion";
+import {
+  AbsoluteFill,
+  interpolate,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { z } from "zod";
 
 export const sampleCompSchema = z.object({
@@ -9,8 +15,16 @@ export const sampleCompSchema = z.object({
 export const Sample: React.FC<z.infer<typeof sampleCompSchema>> = ({
   title,
 }) => {
+  const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
-  const opacity = Math.min(1, frame / 60);
+
+  const opacity = interpolate(frame, [0, 60], [0, 1], {
+    extrapolateLeft: "wrap",
+  });
+  const scale = spring({
+    fps,
+    frame,
+  });
 
   return (
     <AbsoluteFill
@@ -24,6 +38,7 @@ export const Sample: React.FC<z.infer<typeof sampleCompSchema>> = ({
       <div
         style={{
           opacity: opacity,
+          transform: `scale(${scale})`,
         }}
       >
         Hello world
