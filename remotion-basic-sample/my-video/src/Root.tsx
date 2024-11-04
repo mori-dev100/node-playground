@@ -1,7 +1,8 @@
-import './tailwind.css';
+import "./tailwind.css";
 import { Composition } from "remotion";
 import { HelloWorld, myCompSchema } from "./HelloWorld";
 import { Logo, myCompSchema2 } from "./HelloWorld/Logo";
+import { Sample, sampleCompSchema } from "./Sample/Sample";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -40,6 +41,19 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           logoColor1: "#91dAE2" as const,
           logoColor2: "#86A8E7" as const,
+        }}
+      />
+
+      <Composition
+        id="sample"
+        component={Sample}
+        durationInFrames={150}
+        fps={30}
+        width={1920}
+        height={1080}
+        schema={sampleCompSchema}
+        defaultProps={{
+          title: "hello",
         }}
       />
     </>
