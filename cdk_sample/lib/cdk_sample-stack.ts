@@ -28,5 +28,27 @@ export class CdkSampleStack extends cdk.Stack {
     new cdk.CfnOutput(this, "FunctionUrl", {
       value: functionUrl.url,
     });
+
+    // API Gatewayの作成
+    const api = new cdk.aws_apigateway.RestApi(this, "MyApi", {
+      restApiName: "My API Gateway",
+      deployOptions: {
+        stageName: "prod",
+      },
+    });
+
+    const proxyUrl = api.root.addResource("proxy");
+    const gatewayProxy = new cdk.aws_apigateway.HttpIntegration(
+      "https://yinn19vv6a.execute-api.ap-northeast-1.amazonaws.com/opendata/t/kure/v1/livecamera",
+      {
+        proxy: true,
+      }
+    );
+    proxyUrl.addMethod("ANY", gatewayProxy);
+
+    // API GatewayのURLを出力
+    new cdk.CfnOutput(this, "ApiUrl", {
+      value: api.url,
+    });
   }
 }
